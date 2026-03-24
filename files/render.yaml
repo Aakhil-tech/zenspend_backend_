@@ -1,0 +1,17 @@
+# render.yaml
+# This file tells Render exactly how to run your ZenSpend backend.
+# Commit this file to your GitHub repo root — Render reads it automatically.
+
+services:
+  - type: web
+    name: zenspend-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt && python database.py
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DB_PATH
+        value: /opt/render/project/src/zenspend.db
+    disk:
+      name: zenspend-data
+      mountPath: /opt/render/project/src
+      sizeGB: 1
